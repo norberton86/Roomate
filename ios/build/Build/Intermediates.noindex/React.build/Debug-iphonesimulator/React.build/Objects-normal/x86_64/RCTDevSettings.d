@@ -1,0 +1,23 @@
+dependencies: \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Modules/RCTDevSettings.mm \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Modules/RCTDevSettings.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JavaScriptCore.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JSCWrapper.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTBridge+Private.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Modules/RCTJSCSamplingProfiler.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/DevSupport/RCTPackagerClient.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Profiler/RCTProfile.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/DevSupport/RCTPackagerConnection.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/DevSupport/RCTInspectorDevServerHelper.h \
+  /Users/sc-nlopez-osx/SyntelRoomate/node_modules/react-native/React/Inspector/RCTInspectorPackagerConnection.h

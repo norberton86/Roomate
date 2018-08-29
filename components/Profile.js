@@ -3,6 +3,7 @@ import { StyleSheet, Text, View ,ImageBackground, ActivityIndicator,KeyboardAvoi
 import { Akira } from 'react-native-textinput-effects';
 import Button from 'react-native-button';
 import DismissKeyBoard from './DismissKeyBoard'
+import Carrousel from './Carrousel'
 import RNPickerSelect from 'react-native-picker-select';
 var ImagePicker = require('react-native-image-picker');
 
@@ -29,7 +30,9 @@ export default class Profile extends React.Component {
                     label: 'Blue',
                     value: 'blue',
                 },
-      ]
+      ],
+      images:[],
+      selectedIndex:null
     }
    
 
@@ -42,7 +45,6 @@ export default class Profile extends React.Component {
   showPicker () {
 
     ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
       
         if (response.didCancel) {
           console.log('User cancelled image picker');
@@ -54,21 +56,27 @@ export default class Profile extends React.Component {
           console.log('User tapped custom button: ', response.customButton);
         }
         else {
-          let source = { uri: 'data:image/jpeg;base64,' + response.data }//{ uri: response.uri };
-      
-          // You can also display the image using data:
-          // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-      
-         /* this.setState({
-            avatarSource: source
-          });*/
+                this.setState(prevState => ({
+                    images: [...prevState.images, {uri:response.uri,data:'data:image/jpeg;base64,' + response.data}]
+                })) 
         }
       });
   }
 
+  changeHandler(index){
+      this.setState({selectedIndex:index})
+  }
+  
+  removeImage()
+  {
+    var array = [...this.state.images]; // make a separate copy of the array
+    array.splice(this.state.selectedIndex, 1);
+    this.setState({images: array});
+  }
+
   render() {
     
-    const {requesting} = this.state
+    const {requesting,images} = this.state
 
     return (
     <DismissKeyBoard>
@@ -120,20 +128,31 @@ export default class Profile extends React.Component {
                     
                 />
 
-                <View style={styles.operations}>
-                    <TouchableOpacity activeOpacity = { .5 } onPress={()=>this.showPicker()}>
-                        <Image source={require('../img/add_green.png')} style={styles.operation} />
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity activeOpacity = { .5 } >
-                        <Image source={require('../img/close_red.png')} style={styles.operation}/> 
-                    </TouchableOpacity>
-                       
-                </View>
+                {images.length>0?
+                                <View style={styles.operations}>
+                                                <TouchableOpacity activeOpacity = { .5 } onPress={()=>this.showPicker()}>
+                                                    <Image source={require('../img/add_green.png')} style={styles.operation} />
+                                                </TouchableOpacity>
+                                                
+                                                <TouchableOpacity activeOpacity = { .5 } onPress={()=>this.removeImage()}>
+                                                    <Image source={require('../img/close_red.png')} style={styles.operation}/> 
+                                                </TouchableOpacity>            
+                                </View>
+                                :
+                                <TouchableOpacity activeOpacity = { .5 } onPress={()=>this.showPicker()} style={styles.operations}>
+                                    <Image  source={require('../img/add_image.png')} style={styles.addImage}/>    
+                                </TouchableOpacity>      
+                }
+
+                {images.length>0? 
+                                <Carrousel images={images} onChange={this.changeHandler.bind(this)} />
+                                :
+                                null
+                }
 
                 {!requesting?
                     <Button
-                    containerStyle={{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: '#114937',width:150}}
+                    containerStyle={styles.button}
                     disabledContainerStyle={{backgroundColor: 'grey'}}
                     style={{fontSize: 20, color: 'white'}}
                     styleDisabled={{color: 'red'}}
@@ -141,7 +160,7 @@ export default class Profile extends React.Component {
                     UPDATE
                     </Button>
                     :
-                    <ActivityIndicator size="large" color="#114937" />
+                    <ActivityIndicator size="large" color="#114937" style={{marginTop:15}} />
                 }
 
                 </View>
@@ -180,7 +199,12 @@ var styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-around',
         marginBottom:15
-    }
+    },
+    addImage:{
+        width:150,
+        height:150
+    },
+    button:{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: '#114937',width:150,marginTop:15}
   });
 
   const pickerSelectStyles = StyleSheet.create({

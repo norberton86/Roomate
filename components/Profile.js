@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View ,ImageBackground, ActivityIndicator,KeyboardAvoidingView,Image,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, Switch,View ,ImageBackground, ActivityIndicator,KeyboardAvoidingView,Image,TouchableOpacity,AsyncStorage,Alert} from 'react-native';
 import { Akira } from 'react-native-textinput-effects';
 import Button from 'react-native-button';
 import DismissKeyBoard from './DismissKeyBoard'
@@ -8,7 +8,6 @@ import RNPickerSelect from 'react-native-picker-select';
 var ImagePicker = require('react-native-image-picker');
 
 export default class Profile extends React.Component {
-
 
   constructor(props) {
     super(props);
@@ -32,15 +31,22 @@ export default class Profile extends React.Component {
                 },
       ],
       images:[],
-      selectedIndex:null
+      selectedIndex:null,
+      accountActive :  false
+
     }
    
-
   }
 
-  Update() {
-    this.setState({requesting:true})
-  }
+
+  Update(){
+    AsyncStorage.clear().then(res=>{
+        this.props.navigation.navigate('Auth');
+    }).catch(err=>{
+
+    })
+    
+  };
 
   showPicker () {
 
@@ -86,6 +92,16 @@ export default class Profile extends React.Component {
            
                 <View style={styles.container}>
 
+                <Text style={{fontSize: 18,color:'#114937'}}> 
+                    {
+                        this.state.accountActive? 'Account is active' :'Account unactive'
+                    }
+                </Text>
+
+                <Switch
+                onValueChange={(value) => this.setState({accountActive: value})}
+                style={{marginBottom: 10}}
+                value={this.state.accountActive} />
 
                 <Akira
                     style={styles.input}
@@ -205,9 +221,9 @@ var styles = StyleSheet.create({
         height:150
     },
     button:{padding:10, height:45, overflow:'hidden', borderRadius:4, backgroundColor: '#114937',width:150,marginTop:15}
-  });
+});
 
-  const pickerSelectStyles = StyleSheet.create({
+const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
         fontSize: 16,
         paddingTop: 13,
@@ -237,4 +253,4 @@ var styles = StyleSheet.create({
 var options = {
     title: 'Select Image',
     
-  };
+};

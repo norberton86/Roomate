@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View ,ImageBackground,Image, ActivityIndicator,KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View ,ImageBackground,Image, ActivityIndicator,KeyboardAvoidingView,AsyncStorage} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Hideo } from 'react-native-textinput-effects';
 import Button from 'react-native-button';
@@ -7,6 +7,7 @@ import DismissKeyBoard from './DismissKeyBoard'
 
 export default class Login extends React.Component {
 
+  static navigationOptions = ({navigation}) => { return { headerTransparent: true, headerStyle: { borderBottomWidth: 0, } } }
 
   constructor(props) {
     super(props);
@@ -18,17 +19,14 @@ export default class Login extends React.Component {
    
   }
 
-  login() {
-    this.setState({requesting:true})
-  }
+  login(){
+    AsyncStorage.setItem('userToken', 'abc').then(res=>{
+      this.props.navigation.navigate('App');
+    }).catch(error=>{
 
-  SignUp(){
-  
-  }
-
-  Forgot(){
-
-  }
+    })
+    
+  };
 
   render() {
     
@@ -77,10 +75,10 @@ export default class Login extends React.Component {
                     {!requesting?
                     <View style={styles.options}> 
                   
-                        <Text style={styles.textOptions} onPress={() => this.SignUp()}>Sign Up</Text>
+                        <Text style={styles.textOptions} onPress={() => this.props.navigation.push('SignUp')}>Sign Up</Text>
                       
 
-                        <Text style={styles.textOptions} onPress={() => this.Forgot()}>Forgot Pass</Text>
+                        <Text style={styles.textOptions} onPress={() => this.props.navigation.push('Forgot')}>Forgot Pass</Text>
                     
                     </View>
                     :
@@ -130,4 +128,4 @@ var styles = StyleSheet.create({
       fontSize:18,
       fontWeight:  'bold'
     }
-  });
+});

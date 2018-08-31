@@ -7,6 +7,7 @@ import DismissKeyBoard from './DismissKeyBoard'
 
 export default class Forgot extends React.Component {
 
+  static navigationOptions = ({navigation}) => { return { headerTransparent: true, headerStyle: { borderBottomWidth: 0, } } }
 
   constructor(props) {
     super(props);
@@ -19,7 +20,7 @@ export default class Forgot extends React.Component {
   }
 
   Request(){
-
+    this.props.navigation.goBack()
   }
 
   render() {

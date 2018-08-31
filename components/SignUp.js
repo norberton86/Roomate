@@ -5,8 +5,9 @@ import Button from 'react-native-button';
 import DismissKeyBoard from './DismissKeyBoard'
 import RNPickerSelect from 'react-native-picker-select';
 
-export default class Login extends React.Component {
+export default class SignUp extends React.Component {
 
+  static navigationOptions = ({navigation}) => { return { headerTransparent: true, headerStyle: { borderBottomWidth: 0, } } }
 
   constructor(props) {
     super(props);
@@ -35,6 +36,7 @@ export default class Login extends React.Component {
 
   signUp() {
     this.setState({requesting:true})
+    this.props.navigation.goBack()
   }
 
 

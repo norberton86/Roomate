@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View ,ImageBackground,Image, ActivityIndicator,KeyboardAvoidingView,AsyncStorage} from 'react-native';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { Hideo } from 'react-native-textinput-effects';
+import { StyleSheet, Text, View ,ImageBackground,Image, ActivityIndicator,KeyboardAvoidingView,AsyncStorage,Alert,TouchableOpacity} from 'react-native';
+import { Akira} from 'react-native-textinput-effects';
 import Button from 'react-native-button';
 import DismissKeyBoard from './DismissKeyBoard'
+import {validateEmail}  from '../utils/validations'
+import {urlBase}  from '../utils/constant'
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 export default class Login extends React.Component {
 
@@ -20,44 +23,97 @@ export default class Login extends React.Component {
   }
 
   login(){
-    AsyncStorage.setItem('userToken', 'abc').then(res=>{
-      this.props.navigation.navigate('App');
-    }).catch(error=>{
+
+    const {email,pass} = this.state
+
+    if(email=='')
+      Alert.alert('Email is required')
+    else if(!validateEmail(email))
+    {
+      Alert.alert('Incorrect email format')
+    }
+    else if(email.split('@')[1]!='syntel.com')
+    {
+      Alert.alert('Please use a Syntel email acccount')
+    }
+    else if(pass=='')
+    Alert.alert('Pass is required')
+    else
+    this.connectAndNavigate(email.toLowerCase(),pass.toLowerCase())
+  };
+
+
+  connectAndNavigate(email,pass)
+  {
+    this.setState({requesting:true})
+
+    fetch(urlBase+"/login/"+email+'/'+pass)
+    .then ( response => response.json() )
+    .then( response => { 
+
+      this.setState({requesting:false})
+
+      if(response.status=="invalid")
+      {
+        Alert.alert("Invalid Credentials")
+      }
+      else
+      {
+        AsyncStorage.setItem('email', email.toLowerCase()).then(res=>{
+
+          AsyncStorage.setItem('userToken', response.token).then(res=>{
+            this.props.navigation.navigate('App');
+          }).catch(error=>{
+      
+          })
+          
+        }).catch(error=>{
+    
+        })
+      }
 
     })
-    
-  };
+    .catch ( err => {
+      this.setState({requesting:false})
+      Alert.alert('Error trying to connect with server')
+    })
+
+  }
 
   render() {
     
-    const {requesting} = this.state
+    const {requesting,email,pass} = this.state
 
     return (
       <DismissKeyBoard>
           <ImageBackground source={require('../img/loginBackground.jpg')} style={styles.background}>
-         
+           
                 <View style={styles.container}>
                     <Image source={require('../img/syntelLogo.png')} style={styles.syntelLogo}/>
                 
-                    <Hideo
-                    style={styles.input}
-                    iconClass={FontAwesomeIcon}
-                    iconName={'envelope'}
-                    iconColor={'white'}
-                    iconBackgroundColor={'#114937'}
-                    inputStyle={{ color: '#464949' }}
-                  
-                  />
 
-                    <Hideo
+
+                <Akira
                     style={styles.input}
-                    iconClass={FontAwesomeIcon}
-                    iconName={'key'}
-                    iconColor={'white'}
-                    iconBackgroundColor={'#114937'}
-                    inputStyle={{ color: '#464949' }}
+                    label={'E-Mail'}
+                    borderColor={'#114937'}
+                    labelStyle={{ color: '#114937' }}
+                    onChangeText={(text) =>  this.setState({email: text}) }
+                    value={email}
+                />
+
+                   
+
+                   
+                <Akira
+                    style={styles.input}
+                    label={'Pass'}
+                    borderColor={'#114937'}
+                    labelStyle={{ color: '#114937' }}
+                    onChangeText={(text) =>  this.setState({pass: text}) }
+                    value={pass}
                     secureTextEntry={true}
-                  />
+                />
 
                     {!requesting?
                         <Button
@@ -74,12 +130,14 @@ export default class Login extends React.Component {
 
                     {!requesting?
                     <View style={styles.options}> 
-                  
-                        <Text style={styles.textOptions} onPress={() => this.props.navigation.push('SignUp')}>Sign Up</Text>
-                      
+                      <TouchableOpacity activeOpacity = { .5 } onPress={() => this.props.navigation.push('SignUp')}>
+                        <Text style={styles.textOptions}  >Sign Up</Text>
+                      </TouchableOpacity>
 
-                        <Text style={styles.textOptions} onPress={() => this.props.navigation.push('Forgot')}>Forgot Pass</Text>
-                    
+                      <TouchableOpacity activeOpacity = { .5 } onPress={() => this.props.navigation.push('Forgot')}>
+                        <Text style={styles.textOptions} >Forgot Pass</Text>
+                      </TouchableOpacity>  
+
                     </View>
                     :
                     null
@@ -105,15 +163,19 @@ var styles = StyleSheet.create({
     container:{
         flexDirection: 'column',
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        paddingLeft:25,
+        paddingRight:25,
     },
     syntelLogo:{
         width:'60%',
-        height:'35%',
+        height:'30%',
     },
     input:{
-        marginLeft:25,
-        marginRight:25
+      width:'100%',
+        marginBottom:15,
+        marginTop:0,
+
     },
     options:{
         width:'100%',

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator,AsyncStorage,StatusBar,StyleSheet,View} from 'react-native';
+import {ImageBackground,AsyncStorage,StatusBar,StyleSheet,Image} from 'react-native';
 
 export default class AuthLoadingScreen extends React.Component {
     constructor() {
@@ -19,10 +19,10 @@ export default class AuthLoadingScreen extends React.Component {
     // Render any loading content that you like here
     render() {
       return (
-        <View style={styles.container}>
-          <ActivityIndicator />
+        <ImageBackground source={require('../img/loginBackground.jpg')} style={styles.container}>
+           <Image source={require('../img/syntelLogo.png')} style={styles.syntelLogo}/>
           <StatusBar barStyle="default" />
-        </View>
+        </ImageBackground>
       );
     }
   }
@@ -32,5 +32,9 @@ export default class AuthLoadingScreen extends React.Component {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    syntelLogo:{
+      width:'60%',
+      height:'35%',
     },
   });

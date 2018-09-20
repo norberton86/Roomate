@@ -6,7 +6,7 @@
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
 		<data>
-		+xzYhMXA3UCkOBWpVmlQt7Y9GAA=
+		g94w2UAmYT2JWS5RobodC3PpRJU=
 		</data>
 		<key>Entypo.ttf</key>
 		<data>
@@ -83,7 +83,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		e5P4S1IyeKToi+vuobmvMd+c4Gg=
+		JxZpesSNOvOPLzJclv+AWy3TVGo=
 		</data>
 		<key>Ionicons.ttf</key>
 		<data>
@@ -111,7 +111,7 @@
 		</data>
 		<key>PlugIns/SyntelRoomateTests.xctest.dSYM/Contents/Resources/DWARF/SyntelRoomateTests</key>
 		<data>
-		qROT6MA/GsGLX1mUx1bKkxbh2M8=
+		P8sNux8rUL8NBmOkVT8tlZTPMwA=
 		</data>
 		<key>PlugIns/SyntelRoomateTests.xctest/Info.plist</key>
 		<data>
@@ -119,7 +119,7 @@
 		</data>
 		<key>PlugIns/SyntelRoomateTests.xctest/SyntelRoomateTests</key>
 		<data>
-		zyUfJerNWhHDU65evftquJNjWNM=
+		5CUoj+MfWyq8VrkbcYi/QJjqQbc=
 		</data>
 		<key>PlugIns/SyntelRoomateTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
@@ -140,11 +140,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			+xzYhMXA3UCkOBWpVmlQt7Y9GAA=
+			g94w2UAmYT2JWS5RobodC3PpRJU=
 			</data>
 			<key>hash2</key>
 			<data>
-			YKxzohL6oIF+kAjApIK9UQ2YABf/9gZvT9sqrKaT7WY=
+			7OUiYe/gE8JRqnJGqv9BwTU2q9zIg0mSXYBAdWLWjgg=
 			</data>
 		</dict>
 		<key>Entypo.ttf</key>
@@ -395,11 +395,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			qROT6MA/GsGLX1mUx1bKkxbh2M8=
+			P8sNux8rUL8NBmOkVT8tlZTPMwA=
 			</data>
 			<key>hash2</key>
 			<data>
-			KQwGa1wmUidgBzKWn/7XaKGQDoCB6plBwC6uNW6odR4=
+			UpM8nNRpPsw4ZgJq8Nilg6WeakF6/eYYOe7LaSn28rc=
 			</data>
 		</dict>
 		<key>PlugIns/SyntelRoomateTests.xctest/Info.plist</key>
@@ -417,11 +417,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			zyUfJerNWhHDU65evftquJNjWNM=
+			5CUoj+MfWyq8VrkbcYi/QJjqQbc=
 			</data>
 			<key>hash2</key>
 			<data>
-			PJh/qAnXbvb6I7IXpbsVCpsGOt4zLlPplMFMTm31Uic=
+			tBo6CLWuRxqtizRw2FwAFlvufHfAK+mUuru7iE7opj4=
 			</data>
 		</dict>
 		<key>PlugIns/SyntelRoomateTests.xctest/_CodeSignature/CodeResources</key>

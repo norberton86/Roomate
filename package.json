@@ -18,11 +18,15 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "firebase": "^5.4.2",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-button": "^2.3.0",
+    "react-native-cards": "^1.1.4",
     "react-native-carousel": "^0.11.0",
+    "react-native-communications": "^2.2.1",
     "react-native-image-picker": "^0.26.10",
+    "react-native-modal": "^6.5.0",
     "react-native-picker-select": "^4.2.0",
     "react-native-snap-carousel": "^3.7.2",
     "react-native-textinput-effects": "^0.4.2",

@@ -1,9 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View ,ImageBackground, ActivityIndicator,KeyboardAvoidingView,Image} from 'react-native';
+import { StyleSheet, View ,ImageBackground, ActivityIndicator,KeyboardAvoidingView,Alert,ScrollView} from 'react-native';
 import { Akira } from 'react-native-textinput-effects';
 import Button from 'react-native-button';
 import DismissKeyBoard from './DismissKeyBoard'
 import RNPickerSelect from 'react-native-picker-select';
+import {getStatesFormated,getCitiesByState} from '../utils/data'
+import {validateEmail,isPhoneNumber}  from '../utils/validations'
+import {urlBase}  from '../utils/constant'
+
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 export default class SignUp extends React.Component {
 
@@ -13,53 +19,121 @@ export default class SignUp extends React.Component {
     super(props);
     this.state={
       requesting:false,
+      
       email:'',
+      fullName:'',
       pass:'',
+      phone:'',
+
       state: 'null',
-      states: [
-                {
-                    label: 'Red',
-                    value: 'red',
-                },
-                {
-                    label: 'Orange',
-                    value: 'orange',
-                },
-                {
-                    label: 'Blue',
-                    value: 'blue',
-                },
-      ]
+      states: getStatesFormated(),
+      city:'null',
+      cities:[]
     }
    
   }
 
   signUp() {
-    this.setState({requesting:true})
-    this.props.navigation.goBack()
+
+    const {email,fullName,pass,phone,state,city} = this.state
+
+    if(email=='')
+      Alert.alert('Email is required')
+    else if(!validateEmail(email))
+    {
+      Alert.alert('Incorrect email format')
+    }
+    else if(email.split('@')[1]!='syntel.com')
+    {
+      Alert.alert('Please use a Syntel email acccount')
+    }
+    else if(fullName=='')
+        Alert.alert('Full Name is required')
+    else if(pass=='')
+        Alert.alert('Pass is required')
+    else if(phone=='')
+      Alert.alert('Phone is required')
+    else if(!isPhoneNumber(phone))
+    {
+      Alert.alert('Incorrect phone format')
+    }
+    else if(state==null)
+    {
+        Alert.alert('State is required')
+    }
+    else if(city==null)
+    {
+        Alert.alert('City is required')
+    }
+    else
+    {
+        var params = {
+            email: email.toLowerCase(),
+            fullName: fullName.toLowerCase(),
+            pass: pass.toLowerCase(),
+            phone:phone.toLowerCase(),
+            state:state,
+            city:city
+        };
+
+        this.connectAndBacK(params)
+    }
+    
+
   }
 
+  connectAndBacK(params){
 
+ 
+    
+    var request = {
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(params)
+    };
+    
+    this.setState({requesting:true})
+
+    fetch(urlBase+"/singUp", request).then ( response => response.json() )
+    .then( response => { 
+
+      this.setState({requesting:false})
+      if(response.status=="duplicate")
+      {
+        Alert.alert("This email already exists")
+      }
+      else
+      this.props.navigation.goBack()
+    })
+    .catch ( err => {
+      this.setState({requesting:false})
+      Alert.alert('Error trying to connect with server')
+    })
+     
+  }
 
   render() {
     
-    const {requesting} = this.state
+    const {requesting,email,fullName,pass,phone} = this.state
 
     return (
     <DismissKeyBoard>
         <ImageBackground source={require('../img/loginBackground.jpg')} style={styles.background}>
-            <KeyboardAvoidingView  behavior="padding" enabled>
-                
            
+                
+              <ScrollView>
                 <View style={styles.container}>
             
-                {/*<Image source={require('../img/syntelLogo.png')} style={styles.syntelLogo}/>*/}
 
                 <Akira
                     style={styles.input}
                     label={'E-Mail'}
                     borderColor={'#114937'}
                     labelStyle={{ color: '#114937' }}
+                    onChangeText={(text) =>  this.setState({email: text}) }
+                    value={email}
                 />
 
                 <Akira
@@ -67,6 +141,8 @@ export default class SignUp extends React.Component {
                     label={'Full Name'}
                     borderColor={'#114937'}
                     labelStyle={{ color: '#114937' }}
+                    onChangeText={(text) =>  this.setState({fullName: text}) }
+                    value={fullName}
                 />
 
                 <Akira
@@ -74,6 +150,8 @@ export default class SignUp extends React.Component {
                     label={'Pass'}
                     borderColor={'#114937'}
                     labelStyle={{ color: '#114937' }}
+                    onChangeText={(text) =>  this.setState({pass: text}) }
+                    value={pass}
                 />
 
 
@@ -82,6 +160,8 @@ export default class SignUp extends React.Component {
                     label={'Phone'}
                     borderColor={'#114937'}
                     labelStyle={{ color: '#114937' }}
+                    onChangeText={(text) =>  this.setState({phone: text}) }
+                    value={phone}
                 />
 
                  <RNPickerSelect
@@ -91,9 +171,8 @@ export default class SignUp extends React.Component {
                     }}
                     items={this.state.states}
                     onValueChange={(value) => {
-                        this.setState({
-                            state: value,
-                        });
+                        this.setState({state: value,cities:getCitiesByState(value)});
+
                     }}
                   
                     style={{ ...pickerSelectStyles }}
@@ -106,15 +185,15 @@ export default class SignUp extends React.Component {
                         label: 'Select a City...',
                         value: null,
                     }}
-                    items={this.state.states}
+                    items={this.state.cities}
                     onValueChange={(value) => {
                         this.setState({
-                            state: value,
+                            city: value,
                         });
                     }}
                   
                     style={{ ...pickerSelectStyles }}
-                    value={this.state.state}
+                    value={this.state.city}
                     
                 />
 
@@ -132,7 +211,8 @@ export default class SignUp extends React.Component {
                 }
 
                 </View>
-            </KeyboardAvoidingView>
+                </ScrollView>
+           
         </ImageBackground>
     </DismissKeyBoard>
         
@@ -152,6 +232,7 @@ var styles = StyleSheet.create({
         alignItems: "center",
         paddingLeft:25,
         paddingRight:25,
+        paddingTop:30
     },
     input:{
         width:'100%',
@@ -167,7 +248,7 @@ var styles = StyleSheet.create({
 
   const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        fontSize: 16,
+       // fontSize: 16,
         paddingTop: 13,
         paddingHorizontal: 10,
         paddingBottom: 12,
@@ -179,7 +260,7 @@ var styles = StyleSheet.create({
         marginBottom:15
     },
     inputAndroid:{
-        fontSize: 16,
+        //fontSize: 16,
         paddingTop: 13,
         paddingHorizontal: 10,
         paddingBottom: 12,

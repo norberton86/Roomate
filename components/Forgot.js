@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View ,ImageBackground,Image, ActivityIndicator,KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View ,ImageBackground,Image, ActivityIndicator,KeyboardAvoidingView,Alert} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Hideo } from 'react-native-textinput-effects';
 import Button from 'react-native-button';
 import DismissKeyBoard from './DismissKeyBoard'
+import {validateEmail}  from '../utils/validations'
+import {urlBase}  from '../utils/constant'
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 export default class Forgot extends React.Component {
 
@@ -13,19 +17,57 @@ export default class Forgot extends React.Component {
     super(props);
     this.state={
       requesting:false,
-      email:'',
-      pass:''
+      email:''
     }
    
   }
 
   Request(){
-    this.props.navigation.goBack()
+    const {email} = this.state
+
+    if(email=='')
+      Alert.alert('Email is required')
+    else if(!validateEmail(email))
+    {
+      Alert.alert('Incorrect email format')
+    }
+    else if(email.split('@')[1]!='syntel.com')
+    {
+      Alert.alert('Please use a Syntel email acccount')
+    }
+    else
+    this.connectAndBacK(email.toLowerCase())
+  }
+
+  connectAndBacK(email){
+
+    this.setState({requesting:true})
+
+    fetch(urlBase+"/recover/"+email)
+    .then( response => response.json() )
+    .then( response => { 
+
+      this.setState({requesting:false})
+      if(response.status=="success")
+      {
+        Alert.alert("Please check your email")
+        this.props.navigation.goBack()
+      }
+      else{
+        Alert.alert("This email is doesn't exist")
+      }
+      
+    })
+    .catch ( err => {
+      this.setState({requesting:false})
+      Alert.alert('Error trying to connect with server')
+    })
+   
   }
 
   render() {
     
-    const {requesting} = this.state
+    const {requesting,email} = this.state
 
     return (
       <DismissKeyBoard>
@@ -43,7 +85,8 @@ export default class Forgot extends React.Component {
                     iconColor={'white'}
                     iconBackgroundColor={'#114937'}
                     inputStyle={{ color: '#464949' }}
-                  
+                    onChangeText={(text) =>  this.setState({email: text}) }
+                    value={email}
                   />
 
 

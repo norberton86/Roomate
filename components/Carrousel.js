@@ -1,4 +1,4 @@
-import {View,Image,StyleSheet} from 'react-native';
+import {Image,StyleSheet} from 'react-native';
 import React, {Component} from 'react';
 import Carousel from 'react-native-snap-carousel';
 
@@ -6,10 +6,13 @@ export default class Carrousel extends Component {
 
   constructor(props) {
         super(props);
-      
-       
   }
 
+ componentDidMount()
+ {
+  if(this.props.onChange!=null)  
+   this.props.onChange(this._carousel.currentIndex)
+ }
 
   componentDidUpdate(prevProps) {
     if(prevProps.images !== this.props.images) {
@@ -55,7 +58,8 @@ var styles = StyleSheet.create({
 
     addImage:{
         width:180,
-        height:180
+        height:180,
+        borderRadius:4,
     },
    
   });
